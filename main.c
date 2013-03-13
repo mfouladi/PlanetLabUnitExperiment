@@ -5,15 +5,20 @@
 
 int main(int argc, char *argv[]){
   char* x;
-  if (argc != 1){    /* Test for correct number of arguments */
+  printf("%d\n", argc);
+  if (argc != 2){    /* Test for correct number of arguments */
      exit(1);
   }
-  int isSender = atoi(argv[0]);
+  int isSender = atoi(argv[1]);
+  printf("isSender=%d\n", isSender);
   if(isSender==0){
-    unitExperimentSender(1, 1,1, 1,x);
+    printf("RUNNING unitExperimentSender\n");
+    unitExperimentSender(1,2,3,0,x);
   }else if(isSender==1){
+    printf("RUNNING unitExperimentReceiver\n");
     unitExperimentReceiver();
   }else{
+    printf("error\n");
     exit(1);
   }
   return 0;
