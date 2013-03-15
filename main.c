@@ -13,7 +13,7 @@ int main(int argc, char *argv[]){
   printf("isSender=%d\n", isSender);
   if(isSender==0){
     printf("RUNNING unitExperimentSender\n");
-    unitExperimentSender(1,2,3,0,x);
+    unitExperimentSender(100,-20,30,0,x);
   }else if(isSender==1){
     printf("RUNNING unitExperimentReceiver\n");
     unitExperimentReceiver();
@@ -21,5 +21,7 @@ int main(int argc, char *argv[]){
     printf("error\n");
     exit(1);
   }
+  exit(0);
+  printf("program terminated\n");
   return 0;
 }

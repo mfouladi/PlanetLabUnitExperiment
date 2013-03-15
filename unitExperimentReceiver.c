@@ -16,49 +16,48 @@ int unitExperimentReceiver(){
   unsigned short servPort = 16400;    /* Server port */
   char servIP[16]="127.0.0.1";       /* Server IP address (dotted quad) */
   char sendBuffer[12];               /* Buffer for sending packets */
-  char *recBuffer;                   /* Buffer for receiving packets */
+  char recBuffer[12];                   /* Buffer for receiving packets */
   unsigned int sendLen=12;           /* Length of send buffer */
   unsigned int recLen = 12;          /* Length of receive buffer */
   int bytesRcvd, totalBytesRcvd;     /* Bytes read in single recv() 
                                         and total bytes read */
   size_t clntLen;
-  int count = 1;
-printf("succes#%d\n",count++);
+  int count=1;//test
   /* Create a reliable, stream socket using TCP */
   if ((servSock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
     return -1;
-printf("succes#%d\n",count++);
+  printf("success #%d\n",count++);
   /* Construct the server address structure */
   memset(&servAddr, 0, sizeof(servAddr));         /* Zero out structure */
-printf("succes#%d\n",count++);
   servAddr.sin_family      = AF_INET;             /* Internet address family*/
-printf("succes#%d\n",count++);
   servAddr.sin_addr.s_addr = htonl(INADDR_ANY);   /* Server IP address */
-printf(" servAddr=%d\nsucces#%d\n",(INADDR_ANY),count++);
-printf("succes#%d\n",count++);
   servAddr.sin_port        = htons(servPort);     /* Server port */
-printf("succes#%d\n",count++);
   /* Bind to the local address */
+   printf("success #%d\n",count++);
   if (bind(servSock,(struct sockaddr *)&servAddr,sizeof(servAddr)) < 0)
     return -1;
-printf("succes#%d\nwaiting...\n",count++);
-  for(;;){
-    /* Set the size of the in-out parameter */
-    clntLen = sizeof(clntAddr);
-    /* Wait for a client to connect */
-    if ((clntSock = accept(servSock,(struct sockaddr*)&clntAddr,&clntLen)) < 0)
-      continue;
-    /* Receive ACK */
-    if ((bytesRcvd = recv(clntSock, sendBuffer, recLen - 1, 0)) <= 0)
-      return -1;
-printf("succes#%d\n",count++);
-    /* Send the data to the server */
-    if (send(clntSock, sendBuffer, sendLen, 0) != sendLen)
-      return -1;
-printf("succes#%d\n",count++);
-    break;
-  }
+  printf("success #%d\n",count++);
+  /* Mark the socket so it will listen for incoming connections */
+  if (listen(servSock, 5) < 0)
+    return -1;
+  printf("success #%d\n",count++);
+  /* Set the size of the in-out parameter */
+  clntLen = sizeof(clntAddr);
+  /* Wait for a client to connect */
+  if ((clntSock = accept(servSock,(struct sockaddr*)&clntAddr,&clntLen)) < 0)
+    return -1;
+  printf("success #%d\n",count++);
+  /* Receive Data */
+  if ((bytesRcvd = recv(clntSock, sendBuffer, recLen , 0)) <= 0)
+    return -1;
+  printf("success #%d\n",count++);
+  /* Send the data to the server */
+  if (send(clntSock, sendBuffer, sendLen, 0) != sendLen)
+    return -1;
+  printf("success #%d\n",count++);
   close(servSock);
-  exit(0);
+  printf("closed socket successfully\n");
+  //exit(0);
+  printf("exit successfully\n");
   return 0;
 }
